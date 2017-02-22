@@ -15,7 +15,7 @@ void initWiFi()
 
 void waitInstr()
 {
-  server.esp8266 handleClient();
+  server.handleClient();
 }
 
 void handleRoot()
