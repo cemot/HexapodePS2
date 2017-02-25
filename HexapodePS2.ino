@@ -58,7 +58,7 @@ void setup(){
   hexaServoInit();
   hexaHoming();
   delay(1000);
-  
+//  hexaMove( 3, 0, 1, 0 );
   Serial.println();
   Serial.println( "Home position set" );
 
@@ -66,50 +66,33 @@ void setup(){
 
 void loop() {
 
-  ps2x.read_gamepad(false, false);
-
-if(ps2x.ButtonPressed(PSB_PAD_DOWN)){
+  ps2x.read_gamepad();
+//  Serial.println("inside loop");
+  
+if(ps2x.Button(PSB_PAD_DOWN)){
   Serial.println("PSB_PAD_DOWN pressed");
-  height = height - 10 ;
-  hexaMove( 0, 0, 0, height );
+  hexaMove( -1, 0, 1, 0 );
+  ps2x.read_gamepad();
   }
 
-if(ps2x.ButtonPressed(PSB_PAD_LEFT)){
-  Serial.println("PSB_PAD_LEFT pressed");
-  hexaRotate( 0.2, 1, height );
-  }
-
-if(ps2x.ButtonPressed(PSB_PAD_UP)){
+else if(ps2x.Button(PSB_PAD_UP)){
   Serial.println("PSB_PAD_UP pressed");
-  height = height + 10 ;
-  hexaMove( 0, 0, 0, height );
+  hexaMove( 1, 0, 1, 0 );
+  ps2x.read_gamepad();
   }
 
-if(ps2x.ButtonPressed(PSB_PAD_RIGHT)){
+else if(ps2x.Button(PSB_PAD_LEFT)){
+  Serial.println("PSB_PAD_LEFT pressed");
+  hexaRotate( 1, 1, height );
+  ps2x.read_gamepad();
+  }
+
+else if(ps2x.Button(PSB_PAD_RIGHT)){
   Serial.println("PSB_PAD_RIGHT pressed");
-  hexaRotate( -0.2, 1, height );
+  hexaRotate( -1, 1, height );
+  ps2x.read_gamepad();
   }  
 
-if(ps2x.ButtonPressed(PSB_TRIANGLE)){
-  Serial.println("PSB_TRIANGLE pressed");
-  hexaShuttingDown();
-  return;
-  }
-
-if( ps2x.Analog(PSS_LY) != Ly || ps2x.Analog(PSS_LX) != Lx  ){
-  Serial.println("\nLeft analog stick ");
-  Serial.print(ps2x.Analog(PSS_LX), DEC);
-  Serial.print(",");
-  Serial.print(ps2x.Analog(PSS_LY), DEC); 
-  stepSize = (PSS_LY-127)/127.0;
-  curve = (PSS_LX-127)/127.0;
-  hexaMove( 1, curve, stepSize, height );
-}
-
-
-Ly = ps2x.Analog(PSS_LY);
-Lx = ps2x.Analog(PSS_LX);
-
-  delay(50);  
+  delay(20);  
 
 }
