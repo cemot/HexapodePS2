@@ -320,32 +320,6 @@ void PS2X::sendCommandString(byte string[], byte len) {
 
 /****************************************************************************************/
 byte PS2X::readType() {
-  /*
-    byte temp[sizeof(type_read)];
-
-    sendCommandString(enter_config, sizeof(enter_config));
-
-    delayMicroseconds(CTRL_BYTE_DELAY);
-
-    CMD_SET();
-    CLK_SET();
-    ATT_CLR(); // low enable joystick
-
-    delayMicroseconds(CTRL_BYTE_DELAY);
-
-    for (int i = 0; i<9; i++) {
-      temp[i] = _gamepad_shiftinout(type_read[i]);
-    }
-
-    sendCommandString(exit_config, sizeof(exit_config));
-
-    if(temp[3] == 0x03)
-      return 1;
-    else if(temp[3] == 0x01)
-      return 2;
-
-    return 0;
-  */
 
   if (controller_type == 0x03)
     return 1;
@@ -470,30 +444,7 @@ inline bool PS2X::DAT_CHK(void) {
 inline bool PS2X::DAT_CHK(void) {
   return (*_dat_lport & _dat_mask) ? true : false;
 }
-/*
-inline void PS2X::CLK_SET(void) {
-  GPOS != (1 << *_clk_lport_set);
-}
-inline void PS2X::CLK_CLR(void) {
-  GPOC != (1 << *_clk_lport_clr);
-}
 
-
-inline void PS2X::CMD_SET(void) {
-  GPOS != (1 << *_cmd_lport_set);
-}
-inline void PS2X::CMD_CLR(void) {
-  GPOC != (1 << *_cmd_lport_clr);
-}
-
-
-inline void PS2X::ATT_SET(void) {
-  GPOS != (1 << *_att_lport_set);
-}
-inline void PS2X::ATT_CLR(void) {
-  GPOC !=  (1 << *_att_lport_clr);
-}
-*/
 
 
 #endif

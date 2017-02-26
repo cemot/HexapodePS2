@@ -28,8 +28,8 @@ int Ry = 127;
 // Values of analog joysticks. 127 is the default position (min=0 & max=255)
 
 double lenght = 0;
-double curve = 0;
-double stepSize = 0;
+double curve = 0.0;
+double stepSize = 0.0;
 int height = 100;
 double angle =0;
 
@@ -67,31 +67,94 @@ void setup(){
 void loop() {
 
   ps2x.read_gamepad();
-//  Serial.println("inside loop");
-  
+
+// Un pas en arriere à pleine vitesse  
 if(ps2x.Button(PSB_PAD_DOWN)){
-  Serial.println("PSB_PAD_DOWN pressed");
   hexaMove( -1, 0, 1, 0 );
   ps2x.read_gamepad();
   }
-
+  
+// Un pas en avant à pleine vitesse 
 else if(ps2x.Button(PSB_PAD_UP)){
-  Serial.println("PSB_PAD_UP pressed");
   hexaMove( 1, 0, 1, 0 );
   ps2x.read_gamepad();
   }
 
+// Rotation sur place vers la gauche
 else if(ps2x.Button(PSB_PAD_LEFT)){
-  Serial.println("PSB_PAD_LEFT pressed");
   hexaRotate( 1, 1, height );
   ps2x.read_gamepad();
   }
 
+// Rotation sur place vers la droite
 else if(ps2x.Button(PSB_PAD_RIGHT)){
-  Serial.println("PSB_PAD_RIGHT pressed");
   hexaRotate( -1, 1, height );
   ps2x.read_gamepad();
   }  
+
+// Danse de la vistoire
+else if(ps2x.Button(PSB_CIRCLE)){
+  hexaRotate( -1, 1, height );
+  hexaRotate( -1, 1, height );
+  hexaRotate( -1, 1, height );
+  hexaRotate( 1, 1, height );
+  hexaMove( -1, 0, 1, 0 );
+  hexaMove( -1, 0, 1, 0 );
+  hexaMove( 1, 0, 1, 0 );
+  hexaMove( 1, 0, 1, 0 );
+  hexaRotate( 1, 1, height );
+  hexaRotate( 1, 1, height );
+  hexaRotate( 1, 1, height );
+  hexaRotate( -1, 1, height );
+  ps2x.read_gamepad();
+  }  
+
+
+
+else if( ps2x.Analog(PSS_LY) >=150 || ps2x.Analog(PSS_LY) <=110 ||ps2x.Analog(PSS_LX) >= 150 ||ps2x.Analog(PSS_LX) <= 110 ){
+//  Serial.println("\nLeft analog stick ");
+//  Serial.print(ps2x.Analog(PSS_LX), DEC);
+//  Serial.print(",");
+//  Serial.print(ps2x.Analog(PSS_LY), DEC); 
+// Serial.print(ps2x.Analog(PSS_LX), DEC);
+// Lx =  (Lx << 255) | ps2x.Analog(PSS_LX);
+// Serial.print(ps2x.Analog(PSS_LY), DEC);
+// Ly =  (Ly << 255) | ps2x.Analog(PSS_LY);
+//  double stepSize = ((double)Ly-127)/127.0;
+//  double curve = ((double)Lx-127)/127.0;
+
+
+if (ps2x.Analog(PSS_LY) <= 40){ stepSize= 1;
+}else if (ps2x.Analog(PSS_LY) <= 70){ stepSize= 0.75;
+}else if (ps2x.Analog(PSS_LY) <= 100){ stepSize= 0.5;
+}else if (ps2x.Analog(PSS_LY) <= 120){ stepSize= 0.25;
+}else if (ps2x.Analog(PSS_LY) <= 140){ stepSize= -0.1;
+}else if (ps2x.Analog(PSS_LY) <= 160){ stepSize= -0.25;
+}else if (ps2x.Analog(PSS_LY) <= 190){ stepSize= -0.5;
+}else if (ps2x.Analog(PSS_LY) <= 220){ stepSize= -0.75;
+}else if (ps2x.Analog(PSS_LY) <= 256){ stepSize= -1;
+}else stepSize= 0;
+
+if (ps2x.Analog(PSS_RX) <= 40){ curve= 1;
+}else if (ps2x.Analog(PSS_RX) <= 70){ curve= 0.75;
+}else if (ps2x.Analog(PSS_RX) <= 100){ curve= 0.5;
+}else if (ps2x.Analog(PSS_RX) <= 120){ curve= 0.25;
+}else if (ps2x.Analog(PSS_RX) <= 140){ curve= 0.0;
+}else if (ps2x.Analog(PSS_RX) <= 160){ curve= -0.25;
+}else if (ps2x.Analog(PSS_RX) <= 190){ curve= -0.5;
+}else if (ps2x.Analog(PSS_RX) <= 220){ curve= -0.75;
+}else if (ps2x.Analog(PSS_RX) <= 256){ curve= -1;
+}else curve= 0.0;
+
+
+  hexaMove( stepSize, curve, 1, 0 );
+  ps2x.read_gamepad();
+}
+
+
+
+
+
 
   delay(20);  
 

@@ -58,7 +58,7 @@
 #define _STDBREAK_ 1
 
 /* Number of steps per instructions */
-#define _NBSTEPS_ 50
+#define _NBSTEPS_ 15
 
 /* Lenght or angle of one step */
 #define _STEPLENGHT_ 1
