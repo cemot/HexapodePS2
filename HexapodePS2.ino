@@ -92,6 +92,13 @@ else if(ps2x.Button(PSB_PAD_RIGHT)){
   ps2x.read_gamepad();
   }  
 
+// Rotation sur place vers la droite
+else if(ps2x.Button(PSB_TRIANGLE)){
+  hexaHoming();
+  ps2x.read_gamepad();
+  }  
+
+
 // Danse de la vistoire
 else if(ps2x.Button(PSB_CIRCLE)){
   hexaRotate( -1, 1, height );
