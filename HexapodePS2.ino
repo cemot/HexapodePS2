@@ -30,7 +30,7 @@ int Ry = 127;
 double lenght = 0;
 double curve = 0.0;
 double stepSize = 0.0;
-int height = 100;
+int height = 0;
 double angle =0;
 
 PS2X ps2x;        // create PS2 Controller Class
@@ -40,7 +40,7 @@ PS2X ps2x;        // create PS2 Controller Class
 void setup(){
 
   Serial.begin(57600);
-  delay(8000);
+  delay(4000);
   Serial.println();
   Serial.println( "Serial connexion established" );
 
@@ -70,13 +70,13 @@ void loop() {
 
 // Un pas en arriere à pleine vitesse  
 if(ps2x.Button(PSB_PAD_DOWN)){
-  hexaMove( -1, 0, 1, 0 );
+  hexaMove( -1, 0, 1, height);
   ps2x.read_gamepad();
   }
   
 // Un pas en avant à pleine vitesse 
 else if(ps2x.Button(PSB_PAD_UP)){
-  hexaMove( 1, 0, 1, 0 );
+  hexaMove( 1, 0, 1, height);
   ps2x.read_gamepad();
   }
 
@@ -95,9 +95,21 @@ else if(ps2x.Button(PSB_PAD_RIGHT)){
 // Rotation sur place vers la droite
 else if(ps2x.Button(PSB_TRIANGLE)){
   hexaHoming();
+  height = 0;
   ps2x.read_gamepad();
   }  
 
+else if(ps2x.Button(PSB_L1)){
+  height = height -15 ;
+  hexaMove( -0.1, 0, 1, height);
+  ps2x.read_gamepad();
+  }
+
+else if(ps2x.Button(PSB_R1)){
+  height = height +15 ;
+  hexaMove( -0.1, 0, 1, height);
+  ps2x.read_gamepad();
+  }
 
 // Danse de la vistoire
 else if(ps2x.Button(PSB_CIRCLE)){
@@ -105,10 +117,10 @@ else if(ps2x.Button(PSB_CIRCLE)){
   hexaRotate( -1, 1, height );
   hexaRotate( -1, 1, height );
   hexaRotate( 1, 1, height );
-  hexaMove( -1, 0, 1, 0 );
-  hexaMove( -1, 0, 1, 0 );
-  hexaMove( 1, 0, 1, 0 );
-  hexaMove( 1, 0, 1, 0 );
+  hexaMove( -1, 0, 1, height );
+  hexaMove( -1, 0, 1, height );
+  hexaMove( 1, 0, 1, height );
+  hexaMove( 1, 0, 1, height );
   hexaRotate( 1, 1, height );
   hexaRotate( 1, 1, height );
   hexaRotate( 1, 1, height );
@@ -154,7 +166,7 @@ if (ps2x.Analog(PSS_RX) <= 40){ curve= 1;
 }else curve= 0.0;
 
 
-  hexaMove( stepSize, curve, 1, 0 );
+  hexaMove( stepSize, curve, 1, height );
   ps2x.read_gamepad();
 }
 
